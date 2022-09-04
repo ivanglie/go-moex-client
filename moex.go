@@ -117,11 +117,13 @@ func getRate(code string, fetch fetchFunction) (float64, error) {
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return res, err
 	}
+	defer resp.Body.Close()
+
 	var c *Currency = &Currency{}
 	err = json.Unmarshal(body, &c.values)
 	if err != nil {
