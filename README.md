@@ -2,8 +2,9 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/ivanglie/go-moex-client.svg)](https://pkg.go.dev/github.com/ivanglie/go-moex-client)
 [![Test](https://github.com/ivanglie/go-moex-client/actions/workflows/test.yml/badge.svg)](https://github.com/ivanglie/go-moex-client/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/ivanglie/go-moex-client/branch/master/graph/badge.svg?token=W918OB580J)](https://codecov.io/gh/ivanglie/go-moex-client)
 
-Golang client for the [Moscow Exchange ISS API](https://www.moex.com/a2193).
+Golang client for the [Moscow Exchange ISS API](https://www.moex.com/a2920).
 
 ## Example
 
@@ -35,5 +36,5 @@ See [main.go](./_example/main.go).
 
 For more information check out the following links:
 
-* [MOEX ISS API](https://www.moex.com/a2193)
+* MOEX ISS API [en](https://www.moex.com/a2920), [ru](https://www.moex.com/a2193)
 * [MOEX ISS reference](https://iss.moex.com/iss/reference/)
