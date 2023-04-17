@@ -102,6 +102,7 @@ type currency struct {
 	} `json:"marketdata,omitempty"`
 }
 
+// String returns the string representation of the currency.
 func (s *Currency) String() string {
 	if len(s.values) == 0 {
 		return ""
