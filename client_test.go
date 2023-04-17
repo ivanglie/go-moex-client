@@ -1,36 +1,40 @@
 package moex
 
 import (
+	"bytes"
+	"fmt"
+	"io"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClient(t *testing.T) {
-	if statusCode, err := func() (statusCode int, err error) {
-		req, err := http.NewRequest("GET", baseURL+"/index.xml", nil)
-		if err != nil {
-			return
-		}
+func Test_client_GetRate(t *testing.T) {
+	client := &client{}
+	client.SetFetchFunction(func(url string) (resp *http.Response, err error) {
+		return &http.Response{
+			StatusCode: 200,
+			Body: io.NopCloser(bytes.NewReader(
+				[]byte(`[{"charsetinfo": {}}, {"charsetinfo": {}, "securities": [], "marketdata": [{"LAST": 2}]}]`))),
+		}, nil
+	})
 
-		client := http.Client{Timeout: 3 * time.Second}
-		resp, err := client.Do(req)
-		if err != nil {
-			return
-		}
-		defer resp.Body.Close()
-		statusCode = resp.StatusCode
-
-		return
-	}(); err != nil || statusCode != http.StatusOK {
-		t.Log(statusCode, err)
-		t.SkipNow()
-	}
-
-	client := NewClient()
-	rate, err := client.GetRate(USDRUB)
+	r, err := client.GetRate("C1")
 	assert.Nil(t, err)
-	assert.GreaterOrEqual(t, rate, float64(1))
+	assert.Equal(t, float64(2), r)
+
+	// Error from fetch
+	client.SetFetchFunction(func(url string) (resp *http.Response, err error) {
+		return nil, fmt.Errorf("error")
+	})
+
+	r, err = client.GetRate("C1")
+	assert.Error(t, err)
+	assert.Equal(t, float64(0), r)
+}
+
+func TestNewClient(t *testing.T) {
+	client := NewClient()
+	assert.NotNil(t, client)
 }

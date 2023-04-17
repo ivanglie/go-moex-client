@@ -17,19 +17,20 @@ type client struct {
 	fetch fetchFunction
 }
 
-func (s client) GetRate(code string) (float64, error) {
+func (s *client) GetRate(code string) (float64, error) {
 	rate, err := getRate(code, s.fetch)
 	if err != nil {
 		return 0, err
 	}
+
 	return rate, nil
 }
 
-func (s client) SetFetchFunction(f fetchFunction) {
+func (s *client) SetFetchFunction(f fetchFunction) {
 	s.fetch = f
 }
 
 // NewClient creates a new rates service instance
 func NewClient() Client {
-	return client{http.Get}
+	return &client{http.Get}
 }
