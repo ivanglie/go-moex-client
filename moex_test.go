@@ -54,7 +54,6 @@ func Test_getRate(t *testing.T) {
 	}
 
 	r, err = getRate("C1", fetchFunc)
-	t.Log(r, err)
 	assert.Error(t, err)
 	assert.Equal(t, float64(0), r)
 
@@ -93,4 +92,24 @@ func Test_getRate(t *testing.T) {
 	r, err = getRate("C1", fetchFunc)
 	assert.Error(t, err)
 	assert.Equal(t, float64(0), r)
+}
+
+func TestCurrency_String(t *testing.T) {
+	s := Currency{
+		values: []currency{
+			{
+				Charsetinfo: struct {
+					Name string "json:\"name\""
+				}{
+					Name: "UTF-8",
+				},
+			},
+		},
+	}
+
+	assert.NotNil(t, s.String())
+
+	// Empty values
+	s.values = []currency{}
+	assert.Empty(t, s.String())
 }
